@@ -4,11 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using ImportLib;
 
-namespace MySQL
+namespace ExcelDataImporterMySQL
 {
     public class MySql
     {
+        public enum eIdType : sbyte
+        {
+            Default = 0, // 기본 테이블
+            Generate = 1, // id가 1씩 증가하는 테이블
+            Overlap = 2, // id가 중복인 테이블
+        }
+
         MySqlConnection conn = null;
 
         public MySql(string ConnectionString)
@@ -155,7 +163,7 @@ namespace MySQL
                 catch (MySqlException e)
                 {
                     trx.Rollback();
-                    Console.WriteLine($"QI: {import.qi}");
+                    Console.WriteLine($"QI: {import.eName}");
                     Console.WriteLine($"Row: {count}");
                     Console.WriteLine($"Msg: {e.Message}");
                     return false;
@@ -163,7 +171,7 @@ namespace MySQL
                 catch (Exception e)
                 {
                     trx.Rollback();
-                    Console.WriteLine($"QI: {import.qi}");
+                    Console.WriteLine($"QI: {import.eName}");
                     Console.WriteLine($"Row: {count}");
                     Console.WriteLine($"Msg: {e.Message}");
                     return false;
