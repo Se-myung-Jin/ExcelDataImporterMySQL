@@ -8,6 +8,7 @@ using System.IO;
 using ImportLib;
 using System.Collections.Concurrent;
 using System.Configuration;
+using ImportClasses;
 
 namespace ExcelDataImporterMySQL
 {
@@ -75,6 +76,8 @@ namespace ExcelDataImporterMySQL
         #region Load all excel files
         public static int LoadAllExcelSheet(string dirPathName)
         {
+            LoadExcelSheetAsync<EmployeesClass>(dirPathName, "Employees");
+
             Task[] tasks = new Task[8];
             for (int i = 0; i < tasks.Length; i++)
             {
@@ -130,8 +133,7 @@ namespace ExcelDataImporterMySQL
 
         public static int ExecuteImport(string dirPathName)
         {
-            AppSettingsReader settingsReader = new AppSettingsReader();
-            string connStr = settingsReader.GetValue("PostgreSQLConnectionString", typeof(string)) as string;
+            string connStr = "Server=localhost;Database=devDB;Uid=root;Pwd=111111;";
 
             Console.WriteLine(connStr);
 
